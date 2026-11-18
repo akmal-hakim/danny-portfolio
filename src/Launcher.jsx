@@ -18,6 +18,10 @@ import { useLowPower } from "./hooks/useLowPower.js";
 
 // ── File-tree navigation data ─────────────────────────────────────────────
 
+// ── File Navigation File Navigation File Navigation
+
+
+{/*
 const NAV_TREE = [
   { name: "home.jsx", type: "file", extension: "jsx", sectionId: "hero" },
   { name: "about.md", type: "file", extension: "md", sectionId: "about" },
@@ -60,6 +64,12 @@ const NAV_TREE = [
   },
   { name: "contact.jsx", type: "file", extension: "jsx", sectionId: "contact" },
 ];
+*/} 
+
+
+
+
+
 
 // ── Placeholder portfolio sections ────────────────────────────────────────
 
@@ -1526,7 +1536,7 @@ function MobileNav({ onSelect }) {
                 </svg>
               </button>
             </div>
-            <FileTree data={NAV_TREE} onSelect={handleSelect} />
+            {/* <FileTree data={NAV_TREE} onSelect={handleSelect} /> */}
           </div>
         </div>
       )}
@@ -1534,7 +1544,7 @@ function MobileNav({ onSelect }) {
   );
 }
 
-// ── Mobile project card ──────────────────────────────────────────────────
+// ── Mobile project card ────────────────────────────────────────────────── 
 // Replaces the book-spine Card on <md screens. Shows the scene image,
 // title, description, tech pills, and action buttons in a stacked layout.
 
@@ -1707,7 +1717,7 @@ export default function Launcher() {
   };
 
   return (
-    <div className="min-h-screen lg:pl-[22rem]">
+    <div className="min-h-screen ">
       {/* ── Fixed sparkles background (desktop only for perf) ──────── */}
       {heavyFX && (
         <div className="pointer-events-none fixed inset-0 z-0">
@@ -1726,9 +1736,15 @@ export default function Launcher() {
       {/* ── Mobile hamburger + drawer ─────────────────────────────── */}
       <MobileNav onSelect={handleNavSelect} />
 
+
+
+
+
+
       {/* ── File-tree sidebar navigation ──────────────────────────── */}
+      {/*
       <aside className="hidden lg:block fixed top-0 left-0 h-screen w-[22rem] z-20 p-4 overflow-y-auto">
-        {/* Profile header */}
+        {/* Profile header 
         <div className="mb-4 flex items-center gap-3 px-1">
           <div className="relative shrink-0">
             <div className="absolute -inset-0.5 rounded-full bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 opacity-70 blur-[3px]" />
@@ -1746,8 +1762,15 @@ export default function Launcher() {
             </span>
           </div>
         </div>
-        <FileTree data={NAV_TREE} onSelect={handleNavSelect} />
+        {/* <FileTree data={NAV_TREE} onSelect={handleNavSelect} /> 
       </aside>
+
+      */}
+
+
+
+
+
 
       {/* ── Floating mini-avatar (appears on scroll) ──────────────── */}
       <FloatingAvatar visible={scrollProgress > 0.8} />
