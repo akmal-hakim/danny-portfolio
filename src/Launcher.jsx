@@ -1650,6 +1650,183 @@ function DraggableExplorer({ onSelect }) {
   );
 }
 
+function SiteHeader({ onSelect }) {
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dark, setDark] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("danny-theme") === "dark";
+  });
+
+  useEffect(() => {
+    const closeMenus = () => {
+      setMoreOpen(false);
+      setMenuOpen(false);
+    };
+    document.addEventListener("click", closeMenus);
+    return () => document.removeEventListener("click", closeMenus);
+  }, []);
+
+  const scrollTo = (sectionId) => {
+    onSelect({ sectionId });
+    setMoreOpen(false);
+    setMenuOpen(false);
+  };
+
+  const toggleTheme = (event) => {
+    event.stopPropagation();
+    setDark((current) => {
+      const next = !current;
+      localStorage.setItem("danny-theme", next ? "dark" : "light");
+      return next;
+    });
+  };
+
+  const menuLinks = [
+    ["Home", "hero"],
+    ["About", "about"],
+    ["Skills", "skills"],
+    ["Projects", "projects"],
+    ["Experience", "experience"],
+    ["Behind the code", "behind-the-code"],
+    ["Blog", "blog"],
+    ["Contact", "contact"],
+  ];
+
+  return (
+    <div className="fixed left-1/2 top-3 z-[60] w-[calc(100%-1.5rem)] max-w-max -translate-x-1/2">
+      <header
+        className={`site-header ${dark ? "site-header-dark" : ""} flex h-12 items-center rounded-xl border px-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.12)] backdrop-blur-xl`}
+        aria-label="Main navigation"
+      >
+        <button
+          type="button"
+          onClick={() => scrollTo("hero")}
+          aria-label="Go to home"
+          className="site-header-hover mr-1 grid h-9 w-9 shrink-0 place-items-center rounded-full"
+        >
+          <img
+            src={avatarSrc}
+            alt=""
+            className="h-8 w-8 rounded-full border border-white/80 object-cover shadow-sm"
+            style={{ objectPosition: "center 28%" }}
+          />
+        </button>
+
+        <nav className="hidden items-center md:flex" aria-label="Desktop navigation">
+          <ul className="m-0 flex list-none items-center p-0">
+            {[
+              ["Home", "hero"],
+              ["About", "about"],
+              ["Projects", "projects"],
+              ["Blog", "blog"],
+            ].map(([label, id]) => (
+              <li key={id}>
+                <button type="button" onClick={() => scrollTo(id)} className="site-header-link">
+                  {label}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                setMoreOpen((open) => !open);
+                setMenuOpen(false);
+              }}
+              className="site-header-link flex items-center gap-1"
+              aria-expanded={moreOpen}
+            >
+              More
+              <span className={`text-[9px] transition-transform ${moreOpen ? "rotate-180" : ""}`}>▼</span>
+            </button>
+            {moreOpen && (
+              <div
+                className="site-header-dropdown absolute right-0 top-11 w-40 rounded-xl border p-1.5"
+                onClick={(event) => event.stopPropagation()}
+              >
+                {[
+                  ["Skills", "skills"],
+                  ["Experience", "experience"],
+                  ["Behind the code", "behind-the-code"],
+                  ["Contact", "contact"],
+                ].map(([label, id]) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => scrollTo(id)}
+                    className="site-header-dropdown-link w-full rounded-lg px-2.5 py-2 text-left"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </nav>
+
+        <div className="ml-1 flex items-center">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="site-header-hover grid h-9 w-9 place-items-center rounded-full"
+          >
+            {dark ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41" />
+              </svg>
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              setMenuOpen((open) => !open);
+              setMoreOpen(false);
+            }}
+            aria-label="Open navigation menu"
+            aria-expanded={menuOpen}
+            className="site-header-hover grid h-9 w-9 place-items-center rounded-full"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+
+        {menuOpen && (
+          <nav
+            className="site-header-dropdown absolute left-0 right-0 top-14 max-h-[calc(100vh-5rem)] overflow-y-auto rounded-xl border p-1.5 md:left-auto md:w-56"
+            aria-label="Navigation menu"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {menuLinks.map(([label, id]) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => scrollTo(id)}
+                className="site-header-dropdown-link w-full rounded-lg px-3 py-2.5 text-left"
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+        )}
+      </header>
+    </div>
+  );
+}
+
 // ── Mobile project card ────────────────────────────────────────────────── 
 // Replaces the book-spine Card on <md screens. Shows the scene image,
 // title, description, tech pills, and action buttons in a stacked layout.
@@ -1839,8 +2016,8 @@ export default function Launcher() {
         </div>
       )}
 
-      {/* ── Mobile hamburger + drawer ─────────────────────────────── */}
-      <MobileNav onSelect={handleNavSelect} />
+      {/* ── Fixed centered header ─────────────────────────────────── */}
+      <SiteHeader onSelect={handleNavSelect} />
 
 
 
