@@ -1539,7 +1539,7 @@ function MobileNav({ onSelect }) {
   );
 }
 
-function DraggableExplorer({ onSelect, onClose }) {
+function DraggableExplorer({ onSelect }) {
   const panelRef = useRef(null);
   const dragRef = useRef(null);
   const [position, setPosition] = useState(() => {
@@ -1626,21 +1626,11 @@ function DraggableExplorer({ onSelect, onClose }) {
           onPointerCancel={stopDrag}
           title="Drag to move navigation"
         >
-          <button
-            type="button"
-            onPointerDown={(event) => event.stopPropagation()}
-            onClick={(event) => {
-              event.stopPropagation();
-              onClose();
-            }}
-            aria-label="Close navigation panel"
-            title="Close navigation"
-            className="grid h-7 w-7 shrink-0 place-items-center rounded-md text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-1.5" aria-hidden="true">
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.65_0.2_25)]" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.75_0.18_85)]" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.65_0.18_150)]" />
+          </div>
           <div className="ml-auto mr-auto flex items-center gap-2 select-none">
             <img
               src={avatarSrc}
@@ -1660,7 +1650,7 @@ function DraggableExplorer({ onSelect, onClose }) {
   );
 }
 
-function SiteHeader({ onSelect, onToggleExplorer }) {
+function SiteHeader({ onSelect }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(() => {
@@ -1801,13 +1791,8 @@ function SiteHeader({ onSelect, onToggleExplorer }) {
             type="button"
             onClick={(event) => {
               event.stopPropagation();
-              if (window.matchMedia("(min-width: 1024px)").matches) {
-                onToggleExplorer();
-                setMenuOpen(false);
-              } else {
-                setMenuOpen((open) => !open);
-                setMoreOpen(false);
-              }
+              setMenuOpen((open) => !open);
+              setMoreOpen(false);
             }}
             aria-label="Open navigation menu"
             aria-expanded={menuOpen}
@@ -1967,7 +1952,6 @@ function MobileCard({ project, live, onLaunch, onWake, onIOSLaunch }) {
 export default function Launcher() {
   const status = useHeartbeat();
   const [expanded, setExpanded] = useState(0);
-  const [explorerOpen, setExplorerOpen] = useState(true);
   const scrollProgress = useScrollProgress(400);
   const projectsRef = useRef(null);
   const lowPower = useLowPower();
@@ -2033,10 +2017,7 @@ export default function Launcher() {
       )}
 
       {/* ── Fixed centered header ─────────────────────────────────── */}
-      <SiteHeader
-        onSelect={handleNavSelect}
-        onToggleExplorer={() => setExplorerOpen((open) => !open)}
-      />
+      <SiteHeader onSelect={handleNavSelect} />
 
 
 
@@ -2044,12 +2025,7 @@ export default function Launcher() {
 
 
       {/* ── Draggable file-tree navigation ───────────────────────── */}
-      {explorerOpen && (
-        <DraggableExplorer
-          onSelect={handleNavSelect}
-          onClose={() => setExplorerOpen(false)}
-        />
-      )}
+      <DraggableExplorer onSelect={handleNavSelect} />
 
 
 
