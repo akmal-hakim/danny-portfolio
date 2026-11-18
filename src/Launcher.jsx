@@ -18,10 +18,6 @@ import { useLowPower } from "./hooks/useLowPower.js";
 
 // ── File-tree navigation data ─────────────────────────────────────────────
 
-// ── File Navigation File Navigation File Navigation
-
-
-{/*
 const NAV_TREE = [
   { name: "home.jsx", type: "file", extension: "jsx", sectionId: "hero" },
   { name: "about.md", type: "file", extension: "md", sectionId: "about" },
@@ -64,7 +60,6 @@ const NAV_TREE = [
   },
   { name: "contact.jsx", type: "file", extension: "jsx", sectionId: "contact" },
 ];
-*/} 
 
 
 
@@ -1536,11 +1531,122 @@ function MobileNav({ onSelect }) {
                 </svg>
               </button>
             </div>
-            {/* <FileTree data={NAV_TREE} onSelect={handleSelect} /> */}
+            <FileTree data={NAV_TREE} onSelect={handleSelect} />
           </div>
         </div>
       )}
     </>
+  );
+}
+
+function DraggableExplorer({ onSelect }) {
+  const panelRef = useRef(null);
+  const dragRef = useRef(null);
+  const [position, setPosition] = useState(() => {
+    if (typeof window === "undefined") return { x: 24, y: 24 };
+    try {
+      const saved = JSON.parse(localStorage.getItem("danny-explorer-position"));
+      if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
+        return saved;
+      }
+    } catch {}
+    return { x: 24, y: 24 };
+  });
+
+  const clampPosition = (x, y) => {
+    const panel = panelRef.current;
+    const width = panel?.offsetWidth ?? 352;
+    const height = panel?.offsetHeight ?? 640;
+    return {
+      x: Math.min(Math.max(8, x), Math.max(8, window.innerWidth - width - 8)),
+      y: Math.min(Math.max(8, y), Math.max(8, window.innerHeight - height - 8)),
+    };
+  };
+
+  useEffect(() => {
+    setPosition((current) => clampPosition(current.x, current.y));
+
+    const handleResize = () => {
+      setPosition((current) => clampPosition(current.x, current.y));
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("danny-explorer-position", JSON.stringify(position));
+    } catch {}
+  }, [position]);
+
+  const startDrag = (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const rect = panel.getBoundingClientRect();
+    dragRef.current = {
+      pointerId: event.pointerId,
+      offsetX: event.clientX - rect.left,
+      offsetY: event.clientY - rect.top,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const moveDrag = (event) => {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return;
+    setPosition(clampPosition(
+      event.clientX - dragRef.current.offsetX,
+      event.clientY - dragRef.current.offsetY,
+    ));
+  };
+
+  const stopDrag = (event) => {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return;
+    dragRef.current = null;
+    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  return (
+    <aside
+      ref={panelRef}
+      className="hidden lg:block fixed z-30 w-[22rem] max-h-[calc(100vh-1rem)] p-2"
+      style={{ left: position.x, top: position.y }}
+      aria-label="Draggable site navigation"
+    >
+      <div className="rounded-xl border border-zinc-200 bg-white/90 shadow-[0_12px_40px_-12px_rgba(24,24,27,0.28)] backdrop-blur-xl overflow-hidden">
+        <div
+          className="flex cursor-grab items-center gap-3 border-b border-zinc-200/70 px-3 py-2.5 active:cursor-grabbing"
+          onPointerDown={startDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={stopDrag}
+          onPointerCancel={stopDrag}
+          title="Drag to move navigation"
+        >
+          <div className="flex items-center gap-1.5" aria-hidden="true">
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.65_0.2_25)]" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.75_0.18_85)]" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.65_0.18_150)]" />
+          </div>
+          <div className="ml-auto mr-auto flex items-center gap-2 select-none">
+            <img
+              src={avatarSrc}
+              alt=""
+              className="h-7 w-7 rounded-full border border-white object-cover shadow-sm"
+              style={{ objectPosition: "center 28%" }}
+            />
+            <span className="font-mono text-xs text-zinc-500">Danny / explorer</span>
+          </div>
+        </div>
+
+        <div className="max-h-[calc(100vh-5.5rem)] overflow-y-auto p-1">
+          <FileTree data={NAV_TREE} onSelect={onSelect} className="border-0 bg-transparent shadow-none" />
+        </div>
+      </div>
+    </aside>
   );
 }
 
@@ -1741,31 +1847,8 @@ export default function Launcher() {
 
 
 
-      {/* ── File-tree sidebar navigation ──────────────────────────── */}
-      {/*
-      <aside className="hidden lg:block fixed top-0 left-0 h-screen w-[22rem] z-20 p-4 overflow-y-auto">
-        {/* Profile header 
-        <div className="mb-4 flex items-center gap-3 px-1">
-          <div className="relative shrink-0">
-            <div className="absolute -inset-0.5 rounded-full bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 opacity-70 blur-[3px]" />
-            <img
-              src={avatarSrc}
-              alt="Danny"
-              className="relative h-11 w-11 rounded-full object-cover border-2 border-white shadow-md"
-              style={{ objectPosition: "center 28%" }}
-            />
-          </div>
-          <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold text-zinc-900">Danny</span>
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-400">
-              portfolio
-            </span>
-          </div>
-        </div>
-        {/* <FileTree data={NAV_TREE} onSelect={handleNavSelect} /> 
-      </aside>
-
-      */}
+      {/* ── Draggable file-tree navigation ───────────────────────── */}
+      <DraggableExplorer onSelect={handleNavSelect} />
 
 
 
