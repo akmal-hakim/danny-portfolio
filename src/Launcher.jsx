@@ -2078,13 +2078,13 @@ export default function Launcher() {
               transform: `translateY(${scrollProgress * -30}px)`,
             }}
           >
-            <h1 className="font-display uppercase text-white leading-[1.1] tracking-[-0.02em] text-4xl md:text-5xl lg:text-[5.25rem]">
+            <h1 className="font-display uppercase text-[#1b4b75] leading-[1.1] tracking-[-0.02em] text-4xl md:text-5xl lg:text-[5.25rem]">
               <span className="block">Danny</span>
               <span className="block">Montoya</span>
             </h1>
 
-            <p className="mt-6 font-display uppercase tracking-[0.02em] text-slate-200 text-xs md:text-sm">
-              Full-Stack <span className="mx-2 text-slate-400">|</span> AI Agents <span className="mx-2 text-slate-400">|</span> Product Engineering
+            <p className="mt-6 font-display uppercase tracking-[0.02em] text-[#1b4b75] text-xs md:text-sm">
+              Full-Stack <span className="mx-2 text-[#1b4b75]/60">|</span> AI Agents <span className="mx-2 text-[#1b4b75]/60">|</span> Product Engineering
             </p>
 
             {/* Tagline — typewriter on desktop, static on mobile/reduced-motion */}
