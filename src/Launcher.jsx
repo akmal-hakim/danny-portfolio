@@ -1671,6 +1671,43 @@ function DraggableExplorer({ onSelect, onClose }) {
   );
 }
 
+function SerdarMasthead({ heavyFX }) {
+  return (
+    <header
+      aria-labelledby="serdar-masthead-title"
+      className="serdar-masthead relative isolate flex min-h-[40rem] flex-col items-center justify-center overflow-hidden px-5 pb-12 pt-24 text-center"
+    >
+      <BrushStrokes palette="hero" variant={0} seed={7} className="z-0" />
+      {heavyFX && <Birds />}
+
+      <div className="relative z-20 flex flex-col items-center">
+        <div className="mb-1 flex w-full justify-center md:mb-2">
+          <img
+            src="/assets/serdar-rosette.webp"
+            alt="Islamic illumination rosette"
+            className="h-auto w-[8.4rem] select-none drop-shadow-[0_10px_30px_rgba(40,30,80,0.18)] sm:w-[9.8rem] md:w-[11.2rem]"
+          />
+        </div>
+        <div className="flex flex-col items-center gap-0.5 md:gap-2">
+          <h1
+            id="serdar-masthead-title"
+            className="bg-gradient-to-r from-red-700 via-orange-600 to-red-700 bg-clip-text pb-0.5 text-[3.3rem] font-bold leading-none tracking-[0.012em] text-transparent drop-shadow-[0_2px_8px_rgba(120,40,20,0.18)] sm:text-5xl md:whitespace-nowrap md:pb-2.5 md:text-[4.5rem]"
+            style={{ fontFamily: '"Outfit", sans-serif' }}
+          >
+            Salim Serdar
+          </h1>
+          <p
+            className="max-w-[42rem] text-pretty text-[0.9375rem] font-normal leading-relaxed text-slate-700 sm:text-lg md:pl-8 md:text-xl"
+            style={{ fontFamily: '"Outfit", sans-serif' }}
+          >
+            Turkish-Austrian Muslim exploring technology, history, global affairs, and life in general. I have some tips and tools for you along the way.
+          </p>
+        </div>
+      </div>
+    </header>
+  );
+}
+
 function SiteHeader({ onSelect, onToggleExplorer }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -2062,23 +2099,26 @@ export default function Launcher() {
         />
       )}
 
+      <SerdarMasthead heavyFX={heavyFX} />
 
 
-
-
+      {/* ── OLD HEADER ───────────────────────── */}
 
       {/* ── Floating mini-avatar (appears on scroll) ──────────────── */}
-      <FloatingAvatar visible={scrollProgress > 0.8} />
+      {/* 
+        <FloatingAvatar visible={scrollProgress > 0.8} />
+      */}
 
       {/* ── Hero / Landing ────────────────────────────────────────── */}
+      {/* 
       <section id="hero" className="hero-gradient relative flex min-h-screen flex-col items-center justify-center px-5 md:px-8 overflow-hidden scroll-mt-0">
-        {/* Painterly brush strokes behind content */}
+        {/* Painterly brush strokes behind content 
         <BrushStrokes palette="hero" variant={0} seed={1} />
 
-        {/* Painterly birds drifting around the hero — desktop only */}
+        {/* Painterly birds drifting around the hero — desktop only 
         {heavyFX && <Birds />}
 
-        {/* Content */}
+        {/* Content 
         <div className="relative z-20 flex flex-col items-center text-center max-w-2xl animate-fade-in-up">
           <HeroAvatar progress={scrollProgress} />
 
@@ -2098,7 +2138,7 @@ export default function Launcher() {
               Full-Stack <span className="mx-2 text-[#1b4b75]/60">|</span> AI Agents <span className="mx-2 text-[#1b4b75]/60">|</span> Product Engineering
             </p>
 
-            {/* Tagline — typewriter on desktop, static on mobile/reduced-motion */}
+            {/* Tagline — typewriter on desktop, static on mobile/reduced-motion 
             <div className="mt-10 inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm px-5 py-2.5 shadow-sm ring-1 ring-zinc-200/80">
               <span className="text-sm font-medium text-zinc-700 min-h-[1.25em]">
                 {lowPower ? (
@@ -2120,7 +2160,7 @@ export default function Launcher() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator 
         <button
           onClick={scrollToProjects}
           className="absolute bottom-10 flex flex-col items-center gap-2 text-zinc-400 hover:text-zinc-600 transition-colors scroll-hint"
@@ -2132,6 +2172,12 @@ export default function Launcher() {
           {icons.chevronDown}
         </button>
       </section>
+      */} 
+
+
+
+
+
 
       {/* ── About ─────────────────────────────────────────────────── */}
       <AboutSection />

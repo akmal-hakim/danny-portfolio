@@ -142,6 +142,25 @@ body {
 
 /* ── Hero section ────────────────────────────────────────────────────── */
 
+.serdar-masthead {
+  background:
+    radial-gradient(120% 85% at 8% 0%, rgba(59, 130, 246, 0.045) 0%, rgba(59, 130, 246, 0) 75%),
+    radial-gradient(95% 70% at 92% 2%, rgba(56, 189, 248, 0.04) 0%, rgba(56, 189, 248, 0) 72%),
+    linear-gradient(180deg, #fff 0%, #f3f8fc 100%);
+}
+
+.serdar-masthead::before {
+  position: absolute;
+  inset: -8% -10%;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 38% 18% at 15% 78%, rgba(242, 244, 250, 0.42) 0%, rgba(255, 255, 255, 0) 76%),
+    radial-gradient(ellipse 42% 20% at 82% 84%, rgba(250, 242, 240, 0.34) 0%, rgba(255, 255, 255, 0) 78%);
+  content: "";
+  filter: blur(32px);
+  pointer-events: none;
+}
+
 .hero-gradient {
   background:
     radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.06) 0%, transparent 50%),
