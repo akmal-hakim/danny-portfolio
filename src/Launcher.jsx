@@ -1555,11 +1555,21 @@ function DraggableExplorer({ onSelect, onClose }) {
 
   const clampPosition = (x, y) => {
     const panel = panelRef.current;
+    const handle = panel?.querySelector("[data-explorer-drag-handle]");
+    const title = panel?.querySelector("[data-explorer-title]");
     const width = panel?.offsetWidth ?? 352;
-    const height = panel?.offsetHeight ?? 640;
+    const handleHeight = handle?.offsetHeight ?? 48;
+    const panelRect = panel?.getBoundingClientRect();
+    const titleRect = title?.getBoundingClientRect();
+    const titleLeft = panelRect && titleRect
+      ? titleRect.left - panelRect.left
+      : (width - 144) / 2;
+    const titleWidth = titleRect?.width ?? 144;
+    const minX = 8 - titleLeft;
+    const maxX = Math.max(minX, window.innerWidth - titleLeft - titleWidth - 8);
     return {
-      x: Math.min(Math.max(8, x), Math.max(8, window.innerWidth - width - 8)),
-      y: Math.min(Math.max(8, y), Math.max(8, window.innerHeight - height - 8)),
+      x: Math.min(Math.max(minX, x), maxX),
+      y: Math.min(Math.max(8, y), Math.max(8, window.innerHeight - handleHeight - 16)),
     };
   };
 
@@ -1619,7 +1629,8 @@ function DraggableExplorer({ onSelect, onClose }) {
     >
       <div className="rounded-xl border border-zinc-200 bg-white/90 shadow-[0_12px_40px_-12px_rgba(24,24,27,0.28)] backdrop-blur-xl overflow-hidden">
         <div
-          className="flex cursor-grab items-center gap-3 border-b border-zinc-200/70 px-3 py-2.5 active:cursor-grabbing"
+          data-explorer-drag-handle
+          className="flex cursor-grab touch-none items-center gap-3 border-b border-zinc-200/70 px-3 py-2.5 active:cursor-grabbing"
           onPointerDown={startDrag}
           onPointerMove={moveDrag}
           onPointerUp={stopDrag}
@@ -1641,7 +1652,7 @@ function DraggableExplorer({ onSelect, onClose }) {
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
-          <div className="ml-auto mr-auto flex items-center gap-2 select-none">
+          <div data-explorer-title className="ml-auto mr-auto flex items-center gap-2 select-none">
             <img
               src={avatarSrc}
               alt=""
@@ -2125,14 +2136,24 @@ export default function Launcher() {
       {/* ── About ─────────────────────────────────────────────────── */}
       <AboutSection />
 
+
+
       {/* ── Tech carousel ─────────────────────────────────────────── */}
+      {/*
+      
       <TechCarousel />
 
+      */}
+
+
+
       {/* ── Projects section ──────────────────────────────────────── */}
+      {/*
+      
       <div id="projects" ref={projectsRef} className="relative z-10 overflow-hidden scroll-mt-8">
         <BrushStrokes palette="triad" variant={1} seed={5} />
 
-        {/* Header */}
+        {/* Header 
         <header className="relative max-w-7xl mx-auto px-5 md:px-8 pt-20 pb-12 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
             Projects
@@ -2154,9 +2175,9 @@ export default function Launcher() {
           </div>
         </header>
 
-        {/* Cards */}
+        {/* Cards 
         <main className="relative mx-auto max-w-7xl px-5 md:px-8 pb-20">
-          {/* Mobile: vertical stack of full-width cards */}
+          {/* Mobile: vertical stack of full-width cards 
           <div className="md:hidden flex flex-col gap-6">
             {PROJECTS.map((p) => (
               <MobileCard
@@ -2174,7 +2195,7 @@ export default function Launcher() {
             ))}
           </div>
 
-          {/* Desktop: painterly bookshelf */}
+          {/* Desktop: painterly bookshelf 
           <div className="hidden md:flex w-full items-stretch justify-center gap-0">
             {PROJECTS.map((p, idx) => (
               <Card
@@ -2196,15 +2217,26 @@ export default function Launcher() {
         </main>
 
       </div>
+      */}
+
 
       {/* ── Experience ────────────────────────────────────────────── */}
+      {/*
       <ExperienceSection />
+      */}
+
 
       {/* ── Behind the Code (Spotify) ─────────────────────────────── */}
+      {/*
       <BehindTheCodeSection />
+      */} 
 
+      
       {/* ── Reading List (Blog magazine flip-book) ────────────────── */}
+      {/*
       <BlogMagazineSection ref={blogMagazineRef} />
+      */}
+
 
       {/* ── Contact ───────────────────────────────────────────────── */}
       <ContactSection />
